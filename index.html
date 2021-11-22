@@ -6,6 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 9</title>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+  window.TrackJS && TrackJS.install({
+    token: "01f694f1a33044aab654770e6f0ede6a"
+    // for more configuration options, see https://docs.trackjs.com
+  });
+  </script>
 
   <style>
     button {
@@ -95,13 +102,210 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      class ValidationError extends Error{
+        construct(message){
+          this.name = "ValidationError";
+          this.message = message;
+        }
+      }
+
+      function check_data(firstNum, operator,secondNum)
+      {
+        if(secondNum == 0 && operator == "/") 
+        {
+          throw new ValidationError( "Can't divide by 0");
+        }
+        //Check if firstnum and secondNum are number 
+        if(isNaN(firstNum)){
+          throw new ValidationError("First number is not a number");
+        } 
+        if(isNaN(secondNum)){
+          throw new ValidationError("Second number is not a number");
+        }
+      }
+
+      try{
+        //we cant divide the number by 0
+        check_data(firstNum, operator,secondNum);
+      }
+
+      catch(err){
+        if(err instanceof ValidationError)
+        {
+          console.error("ValidationError:", err.message);
+        }
+
+        else if(err instanceof SyntaxError)
+        {
+          console.error("SyntaxError:", err.message);
+        }
+        else{
+          throw err;
+        }
+
+
+      }
+      finally{
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+
+    //Console log
+    errorBtns[0].addEventListener('click',()=>{
+      console.log("Console Log Demo");
+    });
+
+    //Console error
+
+    errorBtns[1].addEventListener('click',()=>{
+      console.error("Console Error Demo");
+    });
+
+    //Console count
+    errorBtns[2].addEventListener('click',() =>{
+      console.count("Count Button: ");
+    });
+
+    //Console warn
+    errorBtns[3].addEventListener('click',() =>{
+      console.warn("Console Warn Button");
+    });
+
+    //Console assert
+    errorBtns[4].addEventListener('click',() =>{
+      const number = 2;
+      //const number_3 = 3
+      const erroMsg = "The number does not equal 3" ;
+      console.assert(number == 3, {number,erroMsg});
+    });
+
+    //Console clear
+    errorBtns[5].addEventListener('click',() =>{
+      console.clear();
+    });
+
+    //console dir
+    errorBtns[6].addEventListener('click',() =>{
+      console.dir(errorBtns[6]);
+    });
+
+    //Console dirxml
+
+    errorBtns[7].addEventListener('click',() =>{
+      console.dirxml(errorBtns[7]);
+    });
+
+    //Console group start
+    errorBtns[8].addEventListener('click',() =>{
+      console.group("console.group");
+    });
+
+
+    //Console group end
+    errorBtns[9].addEventListener('click',() =>{
+      console.groupEnd("console.group");
+    });
+
+    //Console table
+    errorBtns[10].addEventListener('click',() =>{
+      console.table([
+      {
+        Sun: '',
+        Mon: 1,
+        Tue: 2,
+        Wed: 3,
+        Thu: 4,
+        Fri: 5,
+        Sat: 6
+
+      },
+      {
+        Sun: 7,
+        Mon: 8,
+        Tue: 9,
+        Wed: 10,
+        Thu: 11,
+        Fri: 12,
+        Sat: 13
+
+      },
+      {
+        Sun: 14,
+        Mon: 15,
+        Tue: 16,
+        Wed: 17,
+        Thu: 18,
+        Fri: 19,
+        Sat: 20
+
+      },
+      {
+        Sun: 21,
+        Mon: 22,
+        Tue: 23,
+        Wed: 24,
+        Thu: 25,
+        Fri: 26,
+        Sat: 27
+
+      },
+      {
+        Sun: 28,
+        Mon: 29,
+        Tue: 30,
+        Wed: '',
+        Thu: '',
+        Fri: '',
+        Sat: ''
+
+      }
+      ])
+    });
+
+
+    //Start timer
+    errorBtns[11].addEventListener('click',() =>{
+      console.time(["Timer button"]);
+    });
+
+    //End timer
+    errorBtns[12].addEventListener('click',() =>{
+      console.timeEnd(["Timer button"]);
+    });
+
+
+    //Console trace
+    errorBtns[13].addEventListener('click',() =>{
+      const deepest = () => {deeper();};
+      const deeper = () => {deep();};
+      const deep = () => {console.trace();};
+      deepest();
+    });
+
+    
+
+
+
+    //Step 5
+    TrackJS.track('Step_5');
+    errorBtns[14].addEventListener('click',() =>{
+    console.error("Global error");
+     
+    });
+
+
+
+
+
+    
   </script>
 </body>
 
